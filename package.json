@@ -1,6 +1,7 @@
 {
   "name": "request",
   "namespace": "@hulla",
+  "private": true,
   "scripts": {
     "build": "turbo build",
     "lint": "turbo lint",
