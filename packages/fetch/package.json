@@ -1,0 +1,32 @@
+{
+  "name": "@hulla/fetch",
+  "description": "Stress-free fetching 🧘",
+  "maintainers": [
+    "Samuel Hulla <hulla@hulla.dev>"
+  ],
+  "homepage": "https://hulla.dev/projects/fetch",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hulladev/fetch.git",
+    "directory": "packages/api"
+  },
+  "scripts": {
+    "build": "bunchee -m",
+    "lint": "eslint . --fix",
+    "format": "prettier --write .",
+    "test": "vitest run"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "import": {
+      "types": "./dist/es/index.d.mts",
+      "default": "./dist/es/index.mjs"
+    },
+    "require": {
+      "types": "./dist/cjs/index.d.ts",
+      "default": "./dist/cjs/index.js"
+    }
+  }
+}
