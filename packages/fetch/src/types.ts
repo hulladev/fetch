@@ -26,7 +26,7 @@ export type InstanceConfig<
   B extends string,
   RI extends Omit<RInit<string, Methods>, 'url'>,
   RF = Promise<Response>,
-  RP = Promise<unknown>,
+  RP = Promise<any>,
 > = {
   readonly baseURL?: B
   readonly defaults?: RI
@@ -42,12 +42,23 @@ export type InstanceConfig<
 export type InstanceRequest<
   I extends InstanceConfig<string, Omit<RInit<string, Methods>, 'url'>>,
   RQ extends RInit<string, Methods>,
-> = Omit<RQ, 'url' | 'method'> & Omit<I['defaults'], 'method' | 'url'> & {
-  url: I extends { baseURL: infer B } ? B extends string ? `${B}${RQ['url']}` : RQ['url'] : RQ['url']
-  method: RQ extends { method: infer M } ? M extends Methods | Lowercase<Methods> ? Uppercase<M> : I extends { defaults: { method: infer DM } } ? DM : 'GET' : 'GET'
-}
+> = Omit<RQ, 'url' | 'method'> &
+  Omit<I['defaults'], 'method' | 'url'> & {
+    url: I extends { baseURL: infer B }
+      ? B extends string
+        ? `${B}${RQ['url']}`
+        : RQ['url']
+      : RQ['url']
+    method: RQ extends { method: infer M }
+      ? M extends Methods | Lowercase<Methods>
+        ? Uppercase<M>
+        : I extends { defaults: { method: infer DM } }
+          ? DM
+          : 'GET'
+      : 'GET'
+  }
 
 export type ResponseConfig<T, F> = {
   transform?: (res: Awaited<F>) => T
-  fetch: (url: string, req: RequestInit) => F
+  fetch?: (url: string, req: RequestInit) => F
 }
