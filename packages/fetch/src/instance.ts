@@ -36,8 +36,8 @@ export function instance<
     },
     response: <
       const R extends RInit<string, Methods> & { data?: unknown },
-      T extends Promise<any> = Promise<any>,
       F extends Promise<any> = Promise<Response>,
+      T extends Promise<any> = F,
     >(
       request: R,
       config: ResponseConfig<T, F> = {

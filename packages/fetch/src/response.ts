@@ -2,8 +2,8 @@ import type { Methods, RInit, ResponseConfig } from './types'
 
 export function response<
   const R extends RInit<string, Methods> & { data?: unknown },
-  T = Promise<any>,
   F extends Promise<any> = Promise<Response>,
+  T extends Promise<any> = F,
 >(
   request: R,
   config: ResponseConfig<T, F> = {
