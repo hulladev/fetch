@@ -24,4 +24,11 @@ describe('response', () => {
     expect(rs2).resolves.toEqual({ id: 4, name: 'Bob' })
     expect(rs3).resolves.toEqual({ id: 4, name: 'Bob' })
   })
+  test('transform', () => {
+    const rs1 = response(r1, {
+      transform: (res) => res.json().then((data) => ({ custom: data.users as User[] })),
+    })
+    expect(rs1).resolves.toStrictEqual({ custom: users })
+    expectTypeOf(rs1).toEqualTypeOf<Promise<{ custom: User[] }>>()
+  })
 })
