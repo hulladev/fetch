@@ -11,7 +11,7 @@ import type {
 
 export function instance<
   const I extends InstanceConfig<string, Omit<RInit<string, Methods>, 'url'>>,
->(instanceConfig?: Partial<I>) {
+>(instanceConfig?: I) {
   const cfg = instanceConfig ?? ({} as I)
   return {
     request: <const RQ extends RInit<string, Methods>>(

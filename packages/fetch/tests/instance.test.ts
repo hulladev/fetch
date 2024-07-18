@@ -37,6 +37,11 @@ describe('requests', () => {
     expectTypeOf(r.method).toEqualTypeOf<'GET'>()
     expectTypeOf(r.cache).toEqualTypeOf<'force-cache'>()
   })
+  test('different default method', () => {
+    const i = instance({ defaults: { method: 'POST' } })
+    expect(i.config.defaults?.method).toStrictEqual('POST')
+    expectTypeOf(i.config.defaults?.method).toEqualTypeOf<'POST'>()
+  })
   test('request interceptor', () => {
     const i = instance({
       interceptors: {
