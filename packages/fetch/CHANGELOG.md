@@ -1,5 +1,11 @@
 # @hulla/fetch
 
+## 0.0.3
+
+### Patch Changes
+
+- Update instance config types
+
 ## 0.0.2
 
 ### Patch Changes
