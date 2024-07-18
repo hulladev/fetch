@@ -1,5 +1,11 @@
 # @hulla/fetch
 
+## 0.0.4
+
+### Patch Changes
+
+- instance default method inferrence
+
 ## 0.0.3
 
 ### Patch Changes
