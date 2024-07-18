@@ -53,12 +53,49 @@ export type InstanceRequest<
       ? M extends Methods | Lowercase<Methods>
         ? Uppercase<M>
         : I extends { defaults: { method: infer DM } }
-          ? DM
+          ? DM extends Methods | Lowercase<Methods>
+            ? Uppercase<DM>
+            : 'GET'
           : 'GET'
-      : 'GET'
+      : I extends { defaults: { method: infer DM } }
+        ? DM extends Methods | Lowercase<Methods>
+          ? Uppercase<DM>
+          : 'GET'
+        : 'GET'
+    RQ: RQ
   }
 
 export type ResponseConfig<T, F> = {
   transform?: (res: Awaited<F>) => T
   fetch?: (url: string, req: RequestInit) => F
+}
+
+export type Instance<I extends InstanceConfig<string, Omit<RInit<string, Methods>, 'url'>>> = {
+  request: <const RQ extends RInit<string, Methods>>(
+    request: RQ,
+    serialize?: (data: unknown) => BodyInit
+  ) => I['interceptors'] extends {
+    readonly request: (req: any) => infer RY
+  }
+    ? RY extends Omit<HRequest<any>, 'url' | 'method'>
+      ? InstanceRequest<I, RQ> & RY
+      : never
+    : InstanceRequest<I, RQ>
+
+  response: <
+    const R extends RInit<string, Methods> & { data?: unknown },
+    const F extends Promise<any> = Promise<Response>,
+    const T extends Promise<any> = F,
+  >(
+    request: R,
+    config?: ResponseConfig<T, F>
+  ) => I['interceptors'] extends {
+    readonly response: (res: any) => infer RY
+  }
+    ? RY
+    : I['transform'] extends (res: any) => infer RY
+      ? RY
+      : Promise<Response>
+
+  config: I
 }

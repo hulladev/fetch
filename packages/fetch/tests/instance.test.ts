@@ -1,5 +1,6 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, expectTypeOf, test } from 'vitest'
 import { instance } from '../src/instance'
+import { Instance } from '../src/types'
 import { createServer, users } from './mockserver'
 
 const server = createServer()
@@ -79,4 +80,26 @@ describe('response', () => {
     expect(rs1).resolves.toStrictEqual({ users })
     expectTypeOf(rs1).toEqualTypeOf<Promise<{ users: typeof users }>>()
   })
+})
+
+test('passing instance as a function generic', () => {
+  const i = instance({ defaults: { method: 'POST' }, baseURL: 'https://api.com' })
+  const i2 = instance()
+
+  const withInstance = <I extends Instance<any>>(instance: I) => {
+    return instance
+  }
+
+  const r1 = withInstance(i).request({ url: '/users' })
+  const r2 = withInstance(i).request({ url: '/users', method: 'PUT' })
+  expect(r1).toStrictEqual({ url: 'https://api.com/users', method: 'POST' })
+  expectTypeOf(r1.url).toEqualTypeOf<'https://api.com/users'>()
+  expectTypeOf(r1.method).toEqualTypeOf<'POST'>()
+  expect(r2).toStrictEqual({ url: 'https://api.com/users', method: 'PUT' })
+  expectTypeOf(r2.url).toEqualTypeOf<'https://api.com/users'>()
+  expectTypeOf(r2.method).toEqualTypeOf<'PUT'>()
+  const r3 = withInstance(i2).request({ url: 'https://api.com/users' })
+  expect(r3).toStrictEqual({ url: 'https://api.com/users', method: 'GET' })
+  expectTypeOf(r3.url).toEqualTypeOf<'https://api.com/users'>()
+  expectTypeOf(r3.method).toEqualTypeOf<'GET'>()
 })

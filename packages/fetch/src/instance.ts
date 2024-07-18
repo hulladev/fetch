@@ -2,6 +2,7 @@ import { request as _request } from './request'
 import { response as _response } from './response'
 import type {
   HRequest,
+  Instance,
   InstanceConfig,
   InstanceRequest,
   Methods,
@@ -11,7 +12,7 @@ import type {
 
 export function instance<
   const I extends InstanceConfig<string, Omit<RInit<string, Methods>, 'url'>>,
->(instanceConfig?: I) {
+>(instanceConfig?: I): Instance<I> {
   const cfg = instanceConfig ?? ({} as I)
   return {
     request: <const RQ extends RInit<string, Methods>>(
