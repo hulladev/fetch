@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, expectTypeOf, test } from 'vitest'
 import { instance } from '../src/instance'
 import { Instance } from '../src/types'
-import { createServer, users } from './mockserver'
+import { createServer, User, users } from './mockserver'
 
 const server = createServer()
 beforeAll(() => server.listen())
@@ -102,4 +102,15 @@ test('passing instance as a function generic', () => {
   expect(r3).toStrictEqual({ url: 'https://api.com/users', method: 'GET' })
   expectTypeOf(r3.url).toEqualTypeOf<'https://api.com/users'>()
   expectTypeOf(r3.method).toEqualTypeOf<'GET'>()
+})
+
+test('instance resolve method', () => {
+  const i = instance({
+    baseURL: 'https://api.com',
+    transform: (res) => res.json() as Promise<{ users: User[] }>,
+  })
+  expect(i.resolve({ url: '/users' })).resolves.toStrictEqual({
+    users,
+  })
+  expectTypeOf(i.resolve({ url: '/users' })).resolves.toEqualTypeOf<{ users: User[] }>()
 })
