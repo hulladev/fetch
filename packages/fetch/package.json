@@ -1,7 +1,7 @@
 {
   "name": "@hulla/fetch",
   "description": "Stress-free fetching 🧘",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "maintainers": [
     "Samuel Hulla <hulla@hulla.dev>"
   ],

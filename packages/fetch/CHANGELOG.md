@@ -1,5 +1,11 @@
 # @hulla/fetch
 
+## 0.0.5
+
+### Patch Changes
+
+- resolve funcitonality
+
 ## 0.0.4
 
 ### Patch Changes
