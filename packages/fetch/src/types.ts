@@ -97,5 +97,21 @@ export type Instance<I extends InstanceConfig<string, Omit<RInit<string, Methods
       ? RY
       : Promise<Response>
 
+  resolve: <
+    const RQ extends RInit<string, Methods> & { data?: unknown },
+    F extends Promise<any> = Promise<Response>,
+    T extends Promise<any> = F,
+  >(
+    request: RQ,
+    config?: {
+      serialize: (data: unknown) => BodyInit
+    } & ResponseConfig<T, F>
+  ) => I['interceptors'] extends {
+    readonly response: (res: any) => infer RY
+  }
+    ? RY
+    : I['transform'] extends (res: any) => infer RY
+      ? RY
+      : Promise<Response>
   config: I
 }
